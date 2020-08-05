@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:insert="~{fragments/bootstrap.html:: headmenu}">
+    <title>Login</title>
+</head>
+    <body>
+        <div class = "container">
+            <div th:insert="~{fragments/navbar.html:: navbar}"></div>
+            <div class="alert alert-danger" th:if="${loginError}">Wrong user or password</div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <h3>Login User</h3>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                    <form th:action="@{/login}" method="post">
+                        <div class="form-group row">
+                            <div class="col-sm-2"><label>User Name: </label></div>
+                            <div class="col-sm-6">
+                                <input type="text" name="username" class="form-control" placeholder="User Name"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2"><label>Password: </label></div>
+                            <div class="col-sm-6">
+                                <input type="password" name="password" class="form-control" placeholder="Password"/>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" type="Submit"/>Login</button>
+                        <a class="btn btn-primary" role="button" href="/registration">Registration</a>
+                    </form>
+                <div th:insert="~{fragments/footer.html:: footer}"></div>
+            </div>
+        </div>
+    </body>
+</html>

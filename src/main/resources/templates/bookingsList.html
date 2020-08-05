@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/bootstrap.html:: headmenu}">
+    <title>Bookings</title>
+    <div th:include ="~{fragments/filter.html:: filter}"></div>
+</head>
+    <body th:onload="SetFilter('BookingSearch','BookingList')">
+        <div class="container">
+            <div th:insert="~{fragments/navbar.html:: navbar}"></div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <h3> Bookings</h3>
+                </div>
+            </div>
+            <div class="alert alert-danger" th:if="${message!=null}">
+                <label th:if="${message != null}"  th:text="${message}"></label>
+            </div>
+            <div class="alert alert-info" th:if="${confirmed!=null}">
+                <label th:if="${confirmed!= null}"  th:text="${confirmed}"></label>
+            </div>
+             <div th:if="${!isAdmin}">
+                <form th:action="@{'/booking/bookingsearch'}" method="post">
+                    <div class="form-group row">
+                        <div class="col-sm-2"><label>Hotel cats:</label></div>
+                        <div class="col-sm-4">
+                            <select class="custom-select" name="hotcatlid" >
+                                <option th:each="hotelcat : ${hotelcats}"
+                                        th:value    ="${hotelcat.id}"
+                                        th:selected ="(${hotcatsel!=null} and ${hotelcat.id} == ${hotcatsel.id})"
+                                        th:text     ="${hotelcat.catname}">HotelCat</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-2"><label>Date begin:</label></div>
+                        <div class="col-sm-4">
+                            <input type="date" class="form-control" name="datetimebegin" th:value="${datetimebegin}" min = "01-01-1980" max="05-26-2222">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-2"><label>Date end:</label></div>
+                        <div class="col-sm-4">
+                            <input type="date" class="form-control" name="datetimeend"   th:value="${datetimeend}"   min = "01-01-1980" max="05-26-2222">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+            </div>
+            <div class="avhots-container" th:if="${apartments!=null and !apartments.isEmpty()}">
+                <div class="row">
+                    <div class="border-top my-3">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-1"><label>Search:</label></div>
+                    <div class="col-sm-4">
+                        <input class="form-control" id="BookingSearch" type="text" placeholder="Search..">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="border-top my-3">
+
+                    </div>
+                </div>
+                <form th:action="@{'/booking/bookingadd'}" method="post">
+                    <input type="hidden" name = "bdatetimebegin" th:value="${datetimebegin}">
+                    <input type="hidden" name = "bdatetimeend"   th:value="${datetimeend}">
+                    <input type="hidden" name = "hotcatId"       th:value="${hotcatsel.id}">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>Apartment</th>
+                            <th>Hotel</th>
+                        </tr>
+                        </thead>
+                        <tbody id = "BookingList">
+                        <tr th:each="apartment : ${apartments}">
+                            <td><input type="radio" name="aprtId" th:value="${apartment.id}" th:text = "${apartment.aprtname}"/></td>
+                            <td th:text="${apartment.hotel.hotelname}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-primary" type="submit">Book apartment</button>
+                </form>
+            </div>
+            <div id="usrbooks-container" class="container" th:if="${page!=null and !page.isEmpty() and isAdmin}">
+                <p>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <h3>Booking orders list</h3>
+                        </div>
+                    </div>
+                </p>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>Booking order No.</th>
+                                <th>Begin date</th>
+                                <th>End date</th>
+                                <th>Apartment</th>
+                                <th>Category</th>
+                                <th>Hotel</th>
+                                <th>Author</th>
+                                <th th:if="${isAdmin}">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="booking : ${page}">
+                                <td th:text="${booking.getOrderIdBooking()}"></td>
+                                <td th:text="${booking.datetimebegin}"></td>
+                                <td th:text="${booking.datetimeend}"></td>
+                                <td th:text="${booking.apartment.aprtname}"></td>
+                                <td th:text="${booking.hotcat.catname}"></td>
+                                <td th:text="${booking.hotel.hotelname}"></td>
+                                <td th:text="${booking.author.username}"></td>
+                                <td th:if="${isAdmin}">
+                                    <div class="col-sm-2">
+                                        <form th:id="'formdelete_' + ${booking.id}" th:action="@{'/booking/' + ${booking.id}+'/bookingdelete'}"  onSubmit="return confirm('Are you sure?')"  method="get">
+                                            <button class="btn btn-primary"  type="submit">delete</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div  th:include ="~{fragments/pager.html:: pager}"></div>
+                    </div>
+                </div>
+            </div>
+            <div th:insert="~{fragments/footer.html:: footer}"></div>
+        </div>
+    </body>
+</html>

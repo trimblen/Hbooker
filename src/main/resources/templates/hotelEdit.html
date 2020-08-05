@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/bootstrap.html:: headmenu}">
+    <title>Hotel edit</title>
+</head>
+    <body>
+        <div class = "container">
+            <div th:insert="~{fragments/navbar.html:: navbar}"></div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <h3>Hotel edit</h3>
+                </div>
+            </div>
+            <div class="alert alert-danger" th:if="${message!=null}">
+                <label th:if="${message != null}"  th:text="${message}"></label>
+            </div>
+            <div class="panel panel-default">
+                <form th:action="@{'/hotel/hoteledit'}" method="post">
+                    <div class="form-group row">
+                        <div class="col-sm-2"><label>Hotel Name:</label></div>
+                        <div class="col-sm-4">
+                            <input type="text" name="hotelname" class="form-control" th:value="${hotel.hotelname}" placeholder="Hotel Name"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-2"><label>Hotel Descr:</label></div>
+                        <div class="col-sm-4">
+                            <input type="text" name="hDescription" class="form-control" th:value="${hotel.hDescription}" placeholder="Hotel Descr"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-2"><label>HotelCat:</label></div>
+                        <div class="col-sm-4">
+                        <select class="custom-select" name="hotelcat">
+                            <option th:each="hotelcat : ${hotelcats}"
+                                    th:value ="${hotelcat.id}" th:selected="(${hotel.hotelcat.id} == ${hotelcat.id})"
+                                    th:text  ="${hotelcat.catname}">HotelCat</option>
+                        </select>
+                        </div>
+                    </div>
+                    <input type="hidden" th:value="${hotel.id}" name="hotelId">
+                    <button class="btn btn-primary" type="Submit">Save</button>
+                    <a class="btn btn-primary" role="button" href="/hotel/hotelList">Back</a>
+                </form>
+            </div>
+            <div th:insert="~{fragments/footer.html:: footer}"></div>
+        </div>
+    </body>
+</html>

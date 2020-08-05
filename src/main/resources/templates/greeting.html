@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{fragments/bootstrap.html:: headmenu}">
+    <title>Greetings</title>
+</head>
+<body>
+    <div class = "container">
+        <div th:insert="~{fragments/navbar.html:: navbar}"></div>
+        <div class="col-xs-4 text-center">
+            <span th:text=" 'Hello, ' + ${name} +'! Welcome to our booking service.'"></span>
+            <div sec:authorize="!isAuthenticated()">
+                <span th:text="'Seems to be you are not logged in. You can now'"></span>
+                <p>
+                    <a class="btn btn-primary" role="button" href="/login">Login</a>
+                    <a class="btn btn-primary" role="button" href="/registration">Register</a>
+                </p>
+            </div>
+        </div>
+        <div th:insert="~{fragments/footer.html:: footer}"></div>
+    </div>
+</body>
+</html>

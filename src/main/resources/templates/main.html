@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/bootstrap.html:: headmenu}">
+    <title>Hbooker</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+    <body>
+        <div class = "container">
+            <div th:insert="~{fragments/navbar.html:: navbar}"></div>
+            <div th:if="${!isAdmin}">
+                <p>Want to book an apartment? Let's <a th:href="@{'/booking/bookingsList'}">book it!</a></p>
+            </div>
+            <div class="usrbooks-container" th:if="${page!=null and !page.isEmpty()}">
+                <p>Your booking orders</p>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>Booking order No.</th>
+                        <th>Begin date</th>
+                        <th>End date</th>
+                        <th>Apartment</th>
+                        <th>Category</th>
+                        <th>Hotel</th>
+                        <th>Author</th>
+                        <th th:if="${isAdmin}">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="booking : ${page}">
+                        <td th:text="${booking.getOrderIdBooking()}"></td>
+                        <td th:text="${booking.datetimebegin}"></td>
+                        <td th:text="${booking.datetimeend}"></td>
+                        <td th:text="${booking.apartment.aprtname}"></td>
+                        <td th:text="${booking.hotcat.catname}"></td>
+                        <td th:text="${booking.hotel.hotelname}"></td>
+                        <td th:text="${booking.author.username}"></td>
+                        <td th:if="${isAdmin}"><a class="btn btn-primary" role="button" th:href="@{'/booking/' + ${booking.id}+'/bookingdelete'}">delete</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:include ="~{fragments/pager.html:: pager}"></div>
+            <div th:insert="~{fragments/footer.html:: footer}"></div>
+        </div>
+    </body>
+</html>

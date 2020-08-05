@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/bootstrap.html:: headmenu}">
+    <title>HotelCats List</title>
+    <div th:include ="~{fragments/filter.html:: filter}"></div>
+</head>
+    <body th:onload="SetFilter('HotCatSearch','HotCatList')">
+        <div class = "container">
+            <div th:insert="~{fragments/navbar.html:: navbar}"></div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <h3>List of hotel cats</h3>
+                </div>
+            </div>
+            <div class="row"></div>
+            <div th:if="${isAdmin}">
+                <p>
+                    <a class="btn btn-primary" role="button" th:href="@{'/hotcat/hotcatadd'}">Add hotelcat</a>
+                </p>
+            </div>
+            <div class="row">
+                <div class="border-top my-3">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1"><label>Search:</label></div>
+                <div class="col-sm-4">
+                    <input class="form-control" id="HotCatSearch" type="text" placeholder="Search..">
+                </div>
+            </div>
+            <div class="row">
+                <div class="border-top my-3">
+
+                </div>
+            </div>
+            <div class="row"></div>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th th:if="${isAdmin}">Action</th>
+                    <th th:if="${isAdmin}">Deletion Mark</th>
+                </tr>
+                </thead>
+                <tbody id = "HotCatList">
+                    <tr th:each="hotcat : ${page}">
+                        <td th:text="${hotcat.catname}"></td>
+                        <td th:if="${isAdmin}">
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <form th:action="@{'/hotcat/' + ${hotcat.id}}" method="get">
+                                        <button class="btn btn-primary" type="submit">edit</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <form th:id="'formdelete_' + ${hotcat.id}" th:action="@{'/hotcat/' + ${hotcat.id}+'/hotcatdelete'}"  onSubmit="return confirm('Are you sure?')"  method="get">
+                                        <button class="btn btn-primary"  type="submit">delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                        <td th:if="${isAdmin}" th:text="${hotcat.deletionMark}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div th:include ="~{fragments/pager.html:: pager}"></div>
+            <div th:insert="~{fragments/footer.html:: footer}"></div>
+        </div>
+    </body>
+</html>

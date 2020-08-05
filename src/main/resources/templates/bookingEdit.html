@@ -1,0 +1,35 @@
+<<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/bootstrap.html:: headmenu}">
+    <title>Apartment Edit</title>
+</head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <h3>Edit Booking</h3>
+                </div>
+            </div>
+            <div class="alert alert-danger" th:if="${message!=null}">
+                <label th:if="${message != null}"  th:text="${message}"></label>
+            </div>
+            <div class="panel panel-default">
+                <form th:action="@{'/apartment/apartmentedit'}" method="post">
+                    <select name="hotelid" >
+                        <option th:each="hotel : ${hotels}"
+                                th:value ="${hotel.id}" th:selected="(${hotel.id} == ${apartment.hotel.id})"
+                                th:text  ="${hotel.hotelname}">Hotel</option>
+                    </select>
+                    <input type="text" name="aprtname" th:value="${apartment.aprtname}">
+                    <input type="hidden" th:value="${apartment.id}" name="aprtId">
+                    <div>
+                        <button class="btn btn-primary" type="Submit">Save</button>
+                        <a class="btn btn-primary" role="button" href="/hotcat/hotcatsList">Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div th:insert="~{fragments/footer.html:: footer}"></div>
+    </body>
+</html>

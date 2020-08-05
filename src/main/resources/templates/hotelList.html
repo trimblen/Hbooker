@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/bootstrap.html:: headmenu}">
+    <title>Hotels List</title>
+    <div th:include ="~{fragments/filter.html:: filter}"></div>
+</head>
+    <body  th:onload="SetFilter('HotelSearch','HotelList')">
+        <div class = "container">
+            <div th:insert="~{fragments/navbar.html:: navbar}"></div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <h3>List of hotels</h3>
+                </div>
+            </div>
+            <div class="row"></div>
+            <div th:if="${isAdmin}">
+                <p><a class="btn btn-primary" role="button" th:href="@{'/hotel/hoteladd'}">Add hotel</a></p>
+            </div>
+            <div class="row">
+                <div class="border-top my-3">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1"><label>Search:</label></div>
+                <div class="col-sm-4">
+                    <input class="form-control" id="HotelSearch" type="text" placeholder="Search..">
+                </div>
+            </div>
+            <div class="row">
+                <div class="border-top my-3">
+
+                </div>
+            </div>
+            <div class="row"></div>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th th:if="${isAdmin}">Action</th>
+                        <th th:if="${isAdmin}">Deletion Mark</th>
+                    </tr>
+                </thead>
+                <tbody id = "HotelList">
+                    <tr th:each="hotel : ${page}">
+                        <td style="word-break: break-all" th:text="${hotel.hotelname}"></td>
+                        <td style="word-break: break-all" th:text="${hotel.hotelcat.catname}"></td>
+                        <td style="word-break: break-all" th:text="${hotel.hDescription}"></td>
+                        <td style="word-break: break-all" th:if="${isAdmin}">
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <form th:action="@{'/hotel/' + ${hotel.id}}" method="get">
+                                        <button class="btn btn-primary" type="submit">edit</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <form th:id="'formdelete_' + ${hotel.id}" th:action="@{'/hotel/' + ${hotel.id}+'/hoteldelete'}"  onSubmit="return confirm('Are you sure?')"  method="get">
+                                        <button class="btn btn-primary"  type="submit">delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                        <td th:if="${isAdmin}" th:text="${hotel.deletionMark}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div th:include ="~{fragments/pager.html:: pager}"></div>
+            <div th:insert="~{fragments/footer.html:: footer}"></div>
+        </div>
+    </body>
+</html>

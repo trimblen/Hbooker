@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <th:block th:fragment="navbar">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">HBooker</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()" th:if="${isAdmin!=null and isAdmin==false}" class="nav-item">
+                        <a class="nav-link" href="/main">My cabinet</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Booking
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/hotel/hotelList">Hotels</a>
+                            <a class="dropdown-item" href="/apartment/apartmentsList">Apartments</a>
+                            <a class="dropdown-item" href="/booking/bookingsList">Bookings</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/hotcat/hotcatsList">Hotel Categories</a>
+                        </div>
+                    </li>
+                    <li th:if="${isAdmin!=null and isAdmin==true}" class="nav-item">
+                        <a class="nav-link" href="/admin/adminpanel">Admin Panel</a>
+                    </li>
+                </ul>
+                <div class="navbar-text" ><span th:text ="${name}"></span></div>
+                <div sec:authorize="isAuthenticated()">
+                    <form  th:action="@{/logout}" method="post">
+                        <button class="btn btn-primary" type="Submit"/>Sign Out</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </th:block>
+</body>
+</html>

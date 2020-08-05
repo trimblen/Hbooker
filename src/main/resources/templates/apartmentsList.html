@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/bootstrap.html:: headmenu}">
+    <title>Apartments List</title>
+    <div th:include ="~{fragments/filter.html:: filter}"></div>
+</head>
+    <body th:onload="SetFilter('ApartmentSearch','ApartmentList')">
+        <div class="container">
+            <div th:insert="~{fragments/navbar.html:: navbar}"></div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <h3>List of apartments</h3>
+                </div>
+            </div>
+            <div class="row"></div>
+            <div th:if="${isAdmin}">
+                <p><a class="btn btn-primary" role="button" th:href="@{'/apartment/apartmentadd'}">Add apartment</a></p>
+            </div>
+            <div class="row"></div>
+            <div class="row">
+                <div class="border-top my-3">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1"><label>Search:</label></div>
+                <div class="col-sm-4">
+                    <input class="form-control" id="ApartmentSearch" type="text" placeholder="Search..">
+                </div>
+            </div>
+            <div class="row">
+                <div class="border-top my-3">
+
+                </div>
+            </div>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Apartment</th>
+                    <th>Hotel</th>
+                    <th>Description</th>
+                    <th th:if="${isAdmin}">Action</th>
+                    <th th:if="${isAdmin}">Deletion Mark</th>
+                </tr>
+                </thead>
+                <tbody id = "ApartmentList">
+                <tr th:each="apartment : ${page}">
+                    <td th:text="${apartment.aprtname}"></td>
+                    <td th:text="${apartment.hotel.hotelname}"></td>
+                    <td th:text="${apartment.aptDescription}"></td>
+                    <td th:if="${isAdmin}">
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <form th:action="@{'/apartment/' + ${apartment.id}}" method="get">
+                                <button class="btn btn-primary" type="submit">edit</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <form th:id="'formdelete_' + ${apartment.id}" th:action="@{'/apartment/' + ${apartment.id}+'/apartmentdelete'}"  onSubmit="return confirm('Are you sure?')"  method="get">
+                                <button class="btn btn-primary"  type="submit">delete</button>
+                            </form>
+                        </div>
+                    </div>
+                    </td>
+                    <td th:if="${isAdmin}" th:text="${apartment.deletionMark}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <div th:include ="~{fragments/pager.html:: pager}"></div>
+            <div th:insert="~{fragments/footer.html:: footer}"></div>
+        </div>
+    </body>
+</html>

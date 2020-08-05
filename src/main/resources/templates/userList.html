@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/bootstrap.html:: headmenu}">
+    <title>Users List</title>
+    <div th:include ="~{fragments/filter.html:: filter}"></div>
+</head>
+    <body th:onload="SetFilter('UserSearch','UserList')">
+        <div class = "container">
+            <div th:insert="~{fragments/navbar.html:: navbar}"></div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <h3>User list</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="border-top my-3">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1"><label>Search:</label></div>
+                <div class="col-sm-4">
+                    <input class="form-control" id="UserSearch" type="text" placeholder="Search..">
+                </div>
+            </div>
+            <div class="row">
+                <div class="border-top my-3">
+
+                </div>
+            </div>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody id = "UserList">
+                <tr th:each="user : ${page}">
+                    <td th:text="${user.username}"></td>
+                    <td>
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <form th:action="@{'/user/' + ${user.id}}" method="get">
+                                    <button class="btn btn-primary" type="submit">edit</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <form th:id="'formdelete_' + ${user.id}" th:action="@{'/user/' + ${user.id}+'/userdelete'}"  onSubmit="return confirm('Are you sure?')"  method="get">
+                                    <button class="btn btn-primary"  type="submit">delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div th:include ="~{fragments/pager.html:: pager}"></div>
+            <div th:insert="~{fragments/footer.html:: footer}"></div>
+        </div>
+    </body>
+</html>

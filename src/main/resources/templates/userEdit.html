@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/bootstrap.html:: headmenu}">
+    <title>User Edit</title>
+</head>
+    <body>
+        <div class = "container">
+            <div th:insert="~{fragments/navbar.html:: navbar}"></div>
+            <div class="panel panel-default">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <h3>User Edit</h3>
+                    </div>
+                </div>
+                <form th:action="@{'/user'}" method="post">
+                    <div class="form-group row">
+                        <div class="col-sm-2"><label>Hotel Descr:</label></div>
+                        <div class="col-sm-4">
+                            <input type="text" name="username" class="form-control" th:value="${user.username}" placeholder="Username"/>
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" th:each="role : ${roles}">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" th:id="${role}" th:name="${role}" th:checked="${#sets.contains(user.roles, role)}">
+                                <label class="custom-control-label" th:for="${role}" th:text ="${role}"></label>
+                            </div>
+                        </li>
+                    </ul>
+                    <input type="hidden" th:value="${user.id}" name="userId">
+                    <div class="row">
+                        <div class="border-top my-3">
+
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="Submit">Save</button>
+                    <a class="btn btn-primary" role="button" href="/user">Back</a>
+                </form>
+            </div>
+            <div th:insert="~{fragments/footer.html:: footer}"></div>
+        </div>
+    </body>
+</html>

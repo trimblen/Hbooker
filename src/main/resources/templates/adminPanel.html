@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/bootstrap.html:: headmenu}">
+    <title>Admin Panel</title>
+</head>
+    <body>
+        <div class="container">
+            <div th:insert="~{fragments/navbar.html:: navbar}"></div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <h3>Admin Panel</h3>
+                </div>
+            </div>
+            <p><a class="btn btn-primary" role="button" th:href="@{'/user/userList'}">Users</a></p>
+            <div th:insert="~{fragments/footer.html:: footer}"></div>
+        </div>
+    </body>
+</html>
